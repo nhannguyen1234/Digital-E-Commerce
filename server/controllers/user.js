@@ -5,6 +5,8 @@ const {
   genenrateAccessToken,
   genenrateRefreshToken,
 } = require("../middlewares/jwt");
+const sendMail = require("../ultis/sendEmail");
+const crypto = require("crypto");
 // Register function
 const register = asyncHandler(async (req, res) => {
   const { email, password, firstname, lastname } = req.body;
@@ -105,10 +107,56 @@ const logout = asyncHandler(async (req, res) => {
     mes: "Logout done ^^",
   });
 });
+const forgotPassword = asyncHandler(async (req, res) => {
+  // Lấy email
+  const { email } = req.query;
+  // Check xem có email được gửi về không
+  if (!email) throw new Error("Missing Email !");
+  const user = await User.findOne({ email });
+  // Check xem email đã được đăng kí chưa
+  if (!user) throw new Error("Invalid Email !!!");
+  const resetToken = user.createPasswordChangeToken();
+  await user.save();
+  // Gửi mail
+  const html = `Please click on the link below to change your password.This link will expire 15 minutes from now
+  .<a href=${process.env.URL_SERVER}/api/user/reset-password/${resetToken}>Click here ^^</a>`;
+  const data = {
+    email,
+    html,
+  };
+  const result = await sendMail(data);
+  return res.status(200).json({
+    sucess: true,
+    result,
+  });
+});
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token, password } = req.body;
+  const passwordResetToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+  const user = await User.findOne({
+    passwordResetToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+  if (!user) throw new Error("Invalid reset token");
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordChangedAt = Date.now();
+  user.passwordResetExpires = undefined;
+  await user.save();
+  return res.status(200).json({
+    sucess: user ? true : false,
+    mes: user ? "Updated password" : "Something went wrong",
+  });
+});
 module.exports = {
   register,
   login,
   getCurrent,
   refreshAccessToken,
   logout,
+  forgotPassword,
+  resetPassword,
 };
