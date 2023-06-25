@@ -7,7 +7,7 @@ const errorHandler = (error, req, res, next) => {
   //   const statusCode = res.status(res.statusCode || 500).send(error.message);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   return res.status(statusCode).json({
-    sucess: false,
+    success: false,
     mes: error?.message,
   });
 };

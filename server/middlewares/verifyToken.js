@@ -7,7 +7,7 @@ const verifyAccessToken = asyncHandler((req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (error, decode) => {
       if (error) {
         return res.status(401).json({
-          sucess: false,
+          success: false,
           mes: "Invalid Access Token",
         });
       }
@@ -16,11 +16,21 @@ const verifyAccessToken = asyncHandler((req, res, next) => {
     });
   } else {
     return res.status(401).json({
-      sucess: false,
+      success: false,
       mes: "Require authentication!!!",
     });
   }
 });
+const isAdmin = asyncHandler((req, res, next) => {
+  const { role } = req.user;
+  if (role !== "admin")
+    return res.status(401).json({
+      success: false,
+      mes: "Require Admin Role",
+    });
+  next();
+});
 module.exports = {
   verifyAccessToken,
+  isAdmin,
 };
