@@ -1,10 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../middlewares/jwt");
+const { generateAccessToken, generateRefreshToken } = require("../middlewares/jwt");
 const sendMail = require("../ultis/sendEmail");
 const crypto = require("crypto");
 // Register function
@@ -42,11 +39,7 @@ const login = asyncHandler(async (req, res) => {
     // Tạo refreshToken
     const newRefreshToken = generateRefreshToken(response._id, role);
     // Lưu refreshToken vào database
-    await User.findByIdAndUpdate(
-      response._id,
-      { refreshToken: newRefreshToken },
-      { new: true }
-    );
+    await User.findByIdAndUpdate(response._id, { refreshToken: newRefreshToken }, { new: true });
     // Lưu refreshToken vào cookie
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
@@ -73,8 +66,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   // lấy token từ cookie
   const cookie = req.cookies;
   // Check xem có token hay không
-  if (!cookie && !cookie.refreshToken)
-    throw new Error("No refresh token in cookies");
+  if (!cookie && !cookie.refreshToken) throw new Error("No refresh token in cookies");
   // Check xem token có hợp lệ hay không
   const result = await jwt.verify(cookie.refreshToken, process.env.JWT_SECRET);
   const response = await User.findOne({
@@ -83,23 +75,16 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   });
   return res.status(200).json({
     success: response ? true : false,
-    newAccessToken: response
-      ? generateAccessToken(response._id, response.role)
-      : "Refresh token not matched",
+    newAccessToken: response ? generateAccessToken(response._id, response.role) : "Refresh token not matched",
   });
 });
 const logout = asyncHandler(async (req, res) => {
   // Lấy cookie
   const cookie = req.cookies;
   // Check xem token có hay không
-  if (!cookie || !cookie.refreshToken)
-    throw new Error("No refresh token in cookie");
+  if (!cookie || !cookie.refreshToken) throw new Error("No refresh token in cookie");
   // Xóa refreshtoken ở DB
-  await User.findOneAndUpdate(
-    { refreshToken: cookie.refreshToken },
-    { refreshToken: "" },
-    { new: true }
-  );
+  await User.findOneAndUpdate({ refreshToken: cookie.refreshToken }, { refreshToken: "" }, { new: true });
   // Xóa refresh token ở cookie
   res.clearCookie("refreshToken", {
     httpOnly: true,
@@ -136,10 +121,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { token, password } = req.body;
   // Hash lại token cho giống database để so sánh
-  const passwordResetToken = crypto
-    .createHash("sha256")
-    .update(token)
-    .digest("hex");
+  const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
   const user = await User.findOne({
     passwordResetToken,
     passwordResetExpires: { $gt: Date.now() },
@@ -168,15 +150,12 @@ const deleteUser = asyncHandler(async (req, res) => {
   const response = await User.findByIdAndDelete(_id);
   return res.status(200).json({
     success: response ? true : false,
-    deletedUser: response
-      ? `Account created by ${response.email} has been deleted`
-      : "No user delete",
+    deletedUser: response ? `Account created by ${response.email} has been deleted` : "No user delete",
   });
 });
 const updateUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  if (!_id || Object.keys(req.body).length === 0)
-    throw new Error("Missing input !!!");
+  if (!_id || Object.keys(req.body).length === 0) throw new Error("Missing input !!!");
   if ("password" in req.body) {
     throw new Error("Updating password is not allowed");
   }

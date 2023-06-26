@@ -18,13 +18,50 @@ const getProduct = asyncHandler(async (req, res) => {
     productData: product ? product : "Cannot get product",
   });
 });
-const getAllProduct = asyncHandler(async (req, res) => {
-  const products = await Product.find();
-  return res.status(200).json({
-    success: products ? true : false,
-    productData: products ? products : "Cannot get products",
+const getProducts = asyncHandler(async (req, res) => {
+  const queries = { ...req.query };
+  //   tách các trường đặc biệt ra khỏi query
+  const excludeFields = ["limit", "sort", "page", "fields"];
+  excludeFields.forEach((item) => delete queries[item]);
+  //   Format lại các operator cho đúng cú pháp mongoose
+  let queryString = JSON.stringify(queries);
+  queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, (item) => `$${item}`);
+  const formatQueries = JSON.parse(queryString);
+  // Filtering
+  if (queries?.title) formatQueries.title = { $regex: queries.title, $options: "i" };
+  let queryCommand = Product.find(formatQueries);
+
+  // Sorting
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    queryCommand = queryCommand.sort(sortBy);
+  }
+  // Fields Limiting
+  if (req.query.fields) {
+    const fields = req.query.fields.split(",").join(" ");
+    queryCommand = queryCommand.select(fields);
+  }
+  // Pagination
+  // limit : số document lấy về được trong 1 lần gọi API
+  // skip : số document bỏ qua trong 1 lần gọi API
+  // *1 vì lấy từ query về thì sẽ ở dạng chuỗi cần convert sang dạng số
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit || 2;
+  const skip = (page - 1) * limit;
+  queryCommand.skip(skip).limit(limit);
+
+  //  từ phiên bản mongoose 7. -> k xài exec() mà viết .then().catch bth
+  queryCommand.exec(async (error, response) => {
+    if (error) throw new Error(error.message);
+    const counts = await Product.find(formatQueries).countDocuments();
+    return res.status(200).json({
+      success: response ? true : false,
+      counts,
+      products: response ? response : "Cannot get products",
+    });
   });
 });
+
 const updateProduct = asyncHandler(async (req, res) => {
   const { pid } = req.params;
   if (req.body && req.body.title) req.body.slug = slugify(req.body.title);
@@ -44,10 +81,44 @@ const deleteProduct = asyncHandler(async (req, res) => {
     deleteProduct: deletedProduct ? deletedProduct : "Cannot delete product",
   });
 });
+const ratings = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { star, comment, pid } = req.body;
+  if (!star || !pid) throw new Error("Missing infomations");
+  const ratingsProduct = await Product.findById(pid);
+  const alreadyRating = ratingsProduct?.ratings?.find((item) => item.postedBy.toString() === _id);
+  if (alreadyRating) {
+    await Product.updateOne(
+      {
+        ratings: { $elemMatch: alreadyRating },
+      },
+      { $set: { "ratings.$.star": star, "ratings.$.comment": comment } },
+      { new: true }
+    );
+  } else {
+    await Product.findByIdAndUpdate(
+      pid,
+      {
+        $push: { ratings: { star, comment, postedBy: _id } },
+      },
+      { new: true }
+    );
+  }
+  const updatedProduct = await Product.findById(pid);
+  const ratingsMember = updatedProduct.ratings.length;
+  const sumRatings = updatedProduct.ratings.reduce((sum, el) => sum + +el.star, 0);
+  updatedProduct.totalRatings = Math.round((sumRatings * 10) / ratingsMember) / 10;
+  await updatedProduct.save();
+  return res.status(200).json({
+    status: true,
+    updatedProduct,
+  });
+});
 module.exports = {
   createProduct,
   getProduct,
-  getAllProduct,
+  getProducts,
   updateProduct,
   deleteProduct,
+  ratings,
 };
