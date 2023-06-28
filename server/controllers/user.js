@@ -178,6 +178,28 @@ const updateUserByAdmin = asyncHandler(async (req, res) => {
     updateUser: response ? response : "Some thing went wrong",
   });
 });
+const updateUserAddress = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  if (!req.body.address) throw new Error("Missing input");
+  const response = await User.findByIdAndUpdate(_id, { $push: { address: req.body.address } }, { new: true }).select(
+    "-password -role -refreshToken"
+  );
+  return res.json({
+    success: response ? true : false,
+    updatedUserAddress: response ? response : "Cannot update address",
+  });
+});
+const deleteUserAddress = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  if (!req.body.address) throw new Error("Missing input");
+  const response = await User.findByIdAndUpdate(_id, { $pull: { address: req.body.address } }, { new: true }).select(
+    "-password -role -refreshToken"
+  );
+  return res.json({
+    success: response ? true : false,
+    deletedAddress: response ? response : "Cannot delete user address",
+  });
+});
 module.exports = {
   register,
   login,
@@ -190,4 +212,6 @@ module.exports = {
   deleteUser,
   updateUser,
   updateUserByAdmin,
+  updateUserAddress,
+  deleteUserAddress,
 };

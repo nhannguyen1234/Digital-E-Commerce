@@ -11,6 +11,8 @@ router.get("/current", verifyAccessToken, ctrls.getCurrent);
 router.get("/", [verifyAccessToken, isAdmin], ctrls.getAllUser);
 router.delete("/", [verifyAccessToken, isAdmin], ctrls.deleteUser);
 router.patch("/current", verifyAccessToken, ctrls.updateUser);
+router.patch("/address", verifyAccessToken, ctrls.updateUserAddress);
+router.patch("/deladdress", verifyAccessToken, ctrls.deleteUserAddress);
 router.patch("/:uid", [verifyAccessToken, isAdmin], ctrls.updateUserByAdmin);
 
 module.exports = router;

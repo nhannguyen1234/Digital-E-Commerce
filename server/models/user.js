@@ -34,12 +34,10 @@ var userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    address: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "Address",
-      },
-    ],
+    address: {
+      type: Array,
+      default: [],
+    },
     wishlist: [
       {
         type: mongoose.Types.ObjectId,
@@ -80,10 +78,7 @@ userSchema.methods = {
   },
   createPasswordChangeToken: function () {
     const resetToken = crypto.randomBytes(32).toString("hex");
-    this.passwordResetToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
+    this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     this.passwordResetExpires = Date.now() + 15 * 60 * 1000;
     return resetToken;
   },
