@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const ctrls = require("../controllers/user");
 const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
+
 router.post("/register", ctrls.register);
 router.post("/login", ctrls.login);
 router.post("/refreshtoken", ctrls.refreshAccessToken);
@@ -13,6 +14,7 @@ router.delete("/", [verifyAccessToken, isAdmin], ctrls.deleteUser);
 router.patch("/current", verifyAccessToken, ctrls.updateUser);
 router.patch("/address", verifyAccessToken, ctrls.updateUserAddress);
 router.patch("/deladdress", verifyAccessToken, ctrls.deleteUserAddress);
+router.patch("/cart", verifyAccessToken, ctrls.updateCart);
 router.patch("/:uid", [verifyAccessToken, isAdmin], ctrls.updateUserByAdmin);
 
 module.exports = router;

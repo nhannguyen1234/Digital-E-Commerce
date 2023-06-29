@@ -200,6 +200,49 @@ const deleteUserAddress = asyncHandler(async (req, res) => {
     deletedAddress: response ? response : "Cannot delete user address",
   });
 });
+const updateCart = asyncHandler(async (req, res) => {
+  const publicFields = "email cart address";
+  const { _id } = req.user;
+  const { pid, quantity, color } = req.body;
+  if (!pid || !quantity || !color) throw new Error("Missing inputs");
+  const user = await User.findById(_id);
+  const checkedProduct = user.cart.find((item) => {
+    item.product.toString() === pid;
+  });
+  if (checkedProduct) {
+    if (checkedProduct.color === color) {
+      const response = await User.updateOne(
+        { cart: { $elemMatch: checkedProduct } },
+        { $set: { "cart.$.quantity": quantity } },
+        { new: true }
+      ).select(publicFields);
+      return res.json({
+        success: response ? true : false,
+        updatedUser: response ? response : "Cannot update cart",
+      });
+    } else {
+      const response = await User.findByIdAndUpdate(
+        _id,
+        { $push: { cart: { product: pid, quantity, color } } },
+        { new: true }
+      ).select(publicFields);
+      return res.json({
+        success: response ? true : false,
+        updatedUser: response ? response : "Cannot update cart",
+      });
+    }
+  } else {
+    const response = await User.findByIdAndUpdate(
+      _id,
+      { $push: { cart: { product: pid, quantity, color } } },
+      { new: true }
+    ).select(publicFields);
+    return res.json({
+      success: response ? true : false,
+      updatedUser: response ? response : "Cannot update cart",
+    });
+  }
+});
 module.exports = {
   register,
   login,
@@ -214,4 +257,5 @@ module.exports = {
   updateUserByAdmin,
   updateUserAddress,
   deleteUserAddress,
+  updateCart,
 };

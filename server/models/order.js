@@ -17,12 +17,11 @@ var orderSchema = new mongoose.Schema({
     default: "Processing",
     enum: ["Cancelled", "Processing", "Successed"],
   },
-  mobile: {
-    type: String,
-    required: true,
-    unique: true,
+  total: Number,
+  coupon: {
+    type: mongoose.Types.ObjectId,
+    ref: "Coupon",
   },
-  paymentIntent: {},
   orderBy: {
     type: mongoose.Types.ObjectId,
     ref: "User",
