@@ -3,8 +3,44 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 * {
-    color:#505050;
+    /* color:#505050; */
+    
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
+button.slick-prev {
+left: 0px;
+z-index: 10;
+position: absolute;
+top:144px;
+}
+button.slick-next {
+right: 60px;
+z-index: 10;
+top:144px;
+}
+button.slick-prev::before{
+color: gray;
+content: '\276E';
+width: 80px;
+height: 80px;
+font-size: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+button.slick-next::before {
+color:gray;
+content: '\276F';
+width: 80px;
+height: 80px;
+font-size: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+/* .slick-dots li {
+    border: #505050;
+    border-radius: 50%;
+} */

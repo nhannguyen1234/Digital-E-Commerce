@@ -8,9 +8,9 @@ function App() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCategories());
-    }, []);
+    }, [dispatch]);
     return (
-        <div className="font-main">
+        <div className='font-main'>
             <Routes>
                 <Route path={path.ACCESSIBLE} element={<Accessible />}>
                     <Route path={path.HOME} element={<Home />} />

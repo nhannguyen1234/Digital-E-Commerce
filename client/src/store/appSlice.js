@@ -29,5 +29,5 @@ export const appSlice = createSlice({
         });
     },
 });
-export const {} = appSlice.actions;
+export const { login } = appSlice.actions;
 export default appSlice.reducer;
