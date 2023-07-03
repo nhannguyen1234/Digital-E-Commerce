@@ -46,7 +46,7 @@ const getProducts = asyncHandler(async (req, res) => {
   // skip : số document bỏ qua trong 1 lần gọi API
   // *1 vì lấy từ query về thì sẽ ở dạng chuỗi cần convert sang dạng số
   const page = +req.query.page || 1;
-  const limit = +req.query.limit || 2;
+  const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
   const skip = (page - 1) * limit;
   queryCommand.skip(skip).limit(limit);
 
