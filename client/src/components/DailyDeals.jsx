@@ -75,7 +75,11 @@ const DailyDeals = () => {
                 <span className='line-clamp-1 leading-4 pt-4 cursor-pointer hover:text-hovermain'>
                     {dailyDeals?.title}
                 </span>
-                <span className='flex h-4'>{formatStarFromNumber(dailyDeals?.totalRatings, 20)}</span>
+                <span className='flex h-4'>
+                    {formatStarFromNumber(dailyDeals?.totalRatings, 20)?.map((el, index) => (
+                        <span key={index}>{el}</span>
+                    ))}
+                </span>
                 <span className='leading-4 pt-3'>{`${formatPrice(dailyDeals?.price)} VND`}</span>
             </div>
             <div className='px-4 mt-4'>

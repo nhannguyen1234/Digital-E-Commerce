@@ -16,7 +16,6 @@ export const appSlice = createSlice({
 
         // Khi thực hiện action thành công (Promise fulfilled)
         builder.addCase(actions.getCategories.fulfilled, (state, action) => {
-            console.log(action);
             // Tắt trạng thái loading, lưu thông tin vào store
             state.isLoading = false;
             state.categories = action.payload;

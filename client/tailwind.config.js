@@ -36,9 +36,22 @@ module.exports = {
                         transform: ' translateY(0px);',
                     },
                 },
+                'fade-in': {
+                    '0%': {
+                        '-webkit-transform': ' translateZ(80px);',
+                        transform: 'translateZ(80px);',
+                        opacity: '0;',
+                    },
+                    '100%': {
+                        '-webkit-transform': ' translateZ(0);',
+                        transform: 'translateZ(0);',
+                        opacity: '1;',
+                    },
+                },
             },
             animation: {
                 'slide-top': 'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;',
+                'fade-in': 'fade-in 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;',
             },
         },
     },

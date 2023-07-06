@@ -1,5 +1,5 @@
 import React from 'react';
-import { Banner, Sidebar, BestSeller, DailyDeals } from '../../components';
+import { Banner, Sidebar, BestSeller, DailyDeals, FeaturedProd, NewArrivals, HotCollection } from '../../components';
 
 const Home = () => {
     return (
@@ -14,7 +14,15 @@ const Home = () => {
                     <BestSeller />
                 </div>
             </div>
-            <div className='w-full h-[500px]'></div>
+            <div className='w-full my-4'>
+                <FeaturedProd />
+            </div>
+            <div className='w-full my-4'>
+                <NewArrivals />
+            </div>
+            <div className='w-full my-4'>
+                <HotCollection />
+            </div>
         </>
     );
 };

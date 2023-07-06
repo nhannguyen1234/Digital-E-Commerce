@@ -1,52 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { apiGetProducts } from '../apis/product';
 import { Product } from './';
+import { getBestSellerProduct, getNewProducts } from '../store/product/asyncActions';
+import { useDispatch, useSelector } from 'react-redux';
 import Slider from 'react-slick';
+import settings from '../ultils/settingSlide';
 const tabs = [
     { id: 1, name: 'best sellers' },
     { id: 2, name: 'new arrivals' },
 ];
-var settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-};
+
 const BestSeller = () => {
-    const [bestSeller, setBestSeller] = useState(null);
-    const [newArrivals, setNewArrivals] = useState(null);
     const [isActive, setIsActive] = useState(1);
-    const [products, setProducts] = useState(null);
-    const fetchProducts = async () => {
-        const response = await Promise.all([apiGetProducts({ sort: '-sold' }), apiGetProducts({ sort: '-createAt' })]);
-        if (response[0]?.success) {
-            setBestSeller(response[0].products);
-            setProducts(response[0].products);
-        }
-        if (response[1]?.success) {
-            setNewArrivals(response[1].products);
-        }
-        setProducts(response[0].products);
-    };
+    const dispatch = useDispatch();
+    const { newProducts, bestSellerProducts } = useSelector((state) => state.products);
+
     useEffect(() => {
-        fetchProducts();
-    }, []);
-    useEffect(() => {
-        if (isActive === 1) setProducts(bestSeller);
-        if (isActive === 2) setProducts(newArrivals);
-    }, [isActive]);
+        dispatch(getBestSellerProduct());
+        dispatch(getNewProducts());
+    }, [dispatch]);
+    const products = isActive === 1 ? bestSellerProducts : newProducts;
     return (
         <>
             <div className='flex text-[20px] gap-8 pb-4 border-b-2 border-hovermain'>
                 {tabs.map((el) => (
                     <span
                         key={el.id}
-                        className={`font-semibold text-[20px] uppercase border-r cursor-pointer pr-6 text-gray-500 ${
+                        className={`font-semibold text-[20px] uppercase  cursor-pointer pr-6 text-gray-500 ${
                             isActive === el.id ? 'text-gray-900' : ''
-                        }`}
+                        } ${el.id === 2 ? '' : 'border-r'}`}
                         onClick={() => setIsActive(el.id)}
                     >
                         {el.name}
@@ -56,7 +37,7 @@ const BestSeller = () => {
             <div className='mt-2 mx-[-10px]'>
                 <Slider {...settings}>
                     {products?.map((el) => (
-                        <Product key={el.id} productData={el} isNew={isActive === 1 ? false : true} />
+                        <Product key={el._id} productData={el} isNew={isActive === 1 ? false : true} />
                     ))}
                 </Slider>
             </div>

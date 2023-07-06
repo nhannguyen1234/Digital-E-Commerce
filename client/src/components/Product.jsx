@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { formatPrice, formatStarFromNumber } from '../ultils/helperFn';
 import newLabel from '../assets/new.png';
 import trendingLabel from '../assets/trending.png';
 import SelectOption from './SelectOption';
 import icons from '../ultils/icons';
+import path from '../ultils/path';
 const { FaHeart, FaEye, HiMenu } = icons;
 
 const Product = ({ productData, isNew }) => {
     const [showOption, setShowOption] = useState(false);
 
     return (
-        <div
+        <Link
+            to={`/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}
+            className='w-full text-base px-2'
             onMouseEnter={(e) => {
                 e.stopPropagation();
                 setShowOption(true);
@@ -19,7 +23,6 @@ const Product = ({ productData, isNew }) => {
                 e.stopPropagation();
                 setShowOption(false);
             }}
-            className='w-full text-base px-2'
         >
             <div className='w-full border p-4 flex flex-col items-center'>
                 <div className='w-full relative'>
@@ -45,11 +48,15 @@ const Product = ({ productData, isNew }) => {
                     <span className='line-clamp-1 leading-4 p-1 capitalize cursor-pointer hover:text-hovermain'>
                         {productData?.title.toLowerCase()}
                     </span>
-                    <span className='flex mt-2'>{formatStarFromNumber(productData?.totalRatings, 15)}</span>
+                    <span className='flex mt-2'>
+                        {formatStarFromNumber(productData?.totalRatings, 15)?.map((el, index) => (
+                            <span key={index}>{el}</span>
+                        ))}
+                    </span>
                     <span className='leading-4 mt-2'>{`${formatPrice(productData?.price)} VND`}</span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 
