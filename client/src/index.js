@@ -1,20 +1,23 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './store/redux';
+import { store, persistor } from './store/redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import App from './App';
 import './index.css';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
     <Provider store={store}>
-        <Router>
-            <App />
-        </Router>
+        <PersistGate loading={null} persistor={persistor}>
+            <Router>
+                <App />
+            </Router>
+        </PersistGate>
     </Provider>,
 );

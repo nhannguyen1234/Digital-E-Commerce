@@ -13,7 +13,6 @@ export const appSlice = createSlice({
             // Bật trạng thái loading
             state.isLoading = true;
         });
-
         // Khi thực hiện action thành công (Promise fulfilled)
         builder.addCase(actions.getCategories.fulfilled, (state, action) => {
             // Tắt trạng thái loading, lưu thông tin vào store
@@ -28,5 +27,5 @@ export const appSlice = createSlice({
         });
     },
 });
-export const { login } = appSlice.actions;
+// export const { login } = appSlice.actions;
 export default appSlice.reducer;

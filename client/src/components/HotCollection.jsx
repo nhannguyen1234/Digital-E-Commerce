@@ -24,12 +24,9 @@ const HotCollection = () => {
                                     </div>
                                     <ul>
                                         {el?.brand?.map((item, index) => (
-                                            <div className='flex items-center justify-start gap-1 '>
+                                            <div key={index} className='flex items-center justify-start gap-1 '>
                                                 <IoIosArrowForward size={13} color='gray' />
-                                                <li
-                                                    key={index}
-                                                    className='text-gray-500 text-[14px] hover:text-hovermain pb-1 cursor-pointer'
-                                                >
+                                                <li className='text-gray-500 text-[14px] hover:text-hovermain pb-1 cursor-pointer'>
                                                     {item}
                                                 </li>
                                             </div>

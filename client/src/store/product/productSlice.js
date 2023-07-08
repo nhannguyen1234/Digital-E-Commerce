@@ -60,5 +60,5 @@ export const productSlice = createSlice({
     // });
     // },
 });
-export const { login } = productSlice.actions;
+// export const { login } = productSlice.actions;
 export default productSlice.reducer;

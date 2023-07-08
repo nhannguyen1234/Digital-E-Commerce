@@ -9,5 +9,6 @@ const path = {
     FAQ: 'faqs',
     DETAIL_PRODUCT__PID__TITLE: 'product/:pid/:title',
     DETAIL_PRODUCT: 'product',
+    RESET_PASSWORD: 'reset-password/:token',
 };
 export default path;

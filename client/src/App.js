@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Login, Home, Accessible, DetailProduct, FAQs, Products, Service, Blogs } from './pages/public';
+import { Login, Home, Accessible, DetailProduct, FAQs, Products, Service, Blogs, ResetPassword } from './pages/public';
 import path from './ultils/path';
 import { getCategories } from './store/app/asyncActions';
 import { useDispatch } from 'react-redux';
@@ -21,6 +21,7 @@ function App() {
                     <Route path={path.OUR_SERVICES} element={<Service />} />
                     <Route path={path.FAQ} element={<FAQs />} />
                 </Route>
+                <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
                 <Route path={path.LOGIN} element={<Login />} />
             </Routes>
         </div>

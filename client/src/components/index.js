@@ -14,3 +14,5 @@ export { default as NAProduct } from './NAProduct';
 export { default as HotCollection } from './HotCollection';
 export { default as TopHeader } from './TopHeader';
 export { default as Footer } from './Footer';
+export { default as InputField } from './ComonCustom/InputField';
+export { default as Button } from './ComonCustom/Button';

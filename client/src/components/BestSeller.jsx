@@ -34,12 +34,14 @@ const BestSeller = () => {
                     </span>
                 ))}
             </div>
-            <div className='mt-2 mx-[-10px]'>
-                <Slider {...settings}>
-                    {products?.map((el) => (
-                        <Product key={el._id} productData={el} isNew={isActive === 1 ? false : true} />
-                    ))}
-                </Slider>
+            <div className='mt-2 mx-[-10px] '>
+                <div className=' animate-fade-in'>
+                    <Slider {...settings}>
+                        {products?.map((el) => (
+                            <Product key={el._id} productData={el} isNew={isActive === 1 ? false : true} />
+                        ))}
+                    </Slider>
+                </div>
             </div>
             <div className='w-full flex gap-5 '>
                 <img

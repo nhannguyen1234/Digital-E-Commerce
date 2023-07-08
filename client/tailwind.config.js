@@ -11,6 +11,7 @@ module.exports = {
             },
             backgroundColor: {
                 main: '#ee3131',
+                overlay: 'rgba(0,0,0,0.3)',
             },
             colors: {
                 hovermain: '#ee3131',
@@ -36,6 +37,17 @@ module.exports = {
                         transform: ' translateY(0px);',
                     },
                 },
+                'slide-top-sm': {
+                    ' 0%': {
+                        '-webkit-transform': 'translateY(4px);',
+                        transform: 'translateY(4px);',
+                    },
+                    '100%': {
+                        '-webkit-transform': ' translateY(0px);',
+                        transform: ' translateY(0px);',
+                    },
+                },
+
                 'fade-in': {
                     '0%': {
                         '-webkit-transform': ' translateZ(80px);',
@@ -51,7 +63,8 @@ module.exports = {
             },
             animation: {
                 'slide-top': 'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;',
-                'fade-in': 'fade-in 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;',
+                'slide-top-sm': 'slide-top-sm 0.2s linear both;',
+                'fade-in': 'fade-in 0.3s linear both;',
             },
         },
     },
