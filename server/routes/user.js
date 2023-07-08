@@ -6,7 +6,7 @@ router.post("/register", ctrls.register);
 router.post("/login", ctrls.login);
 router.post("/refreshtoken", ctrls.refreshAccessToken);
 router.get("/logout", ctrls.logout);
-router.get("/forgotpassword", ctrls.forgotPassword);
+router.post("/forgotpassword", ctrls.forgotPassword);
 router.patch("/resetpassword", ctrls.resetPassword);
 router.get("/current", verifyAccessToken, ctrls.getCurrent);
 router.get("/", [verifyAccessToken, isAdmin], ctrls.getAllUser);

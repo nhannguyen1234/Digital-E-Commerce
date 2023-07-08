@@ -97,7 +97,7 @@ const logout = asyncHandler(async (req, res) => {
 });
 const forgotPassword = asyncHandler(async (req, res) => {
   // Lấy email
-  const { email } = req.query;
+  const { email } = req.body;
   // Check xem có email được gửi về không
   if (!email) throw new Error("Missing Email !");
   const user = await User.findOne({ email });
@@ -107,15 +107,15 @@ const forgotPassword = asyncHandler(async (req, res) => {
   await user.save();
   // Gửi mail
   const html = `Please click on the link below to change your password.This link will expire 15 minutes from now
-  .<a href=${process.env.URL_SERVER}/api/user/reset-password/${resetToken}>Click here ^^</a>`;
+  .<a href=${process.env.URL_CLIENT}/reset-password/${resetToken}>Click here ^^</a>`;
   const data = {
     email,
     html,
   };
   const result = await sendMail(data);
   return res.status(200).json({
-    success: true,
-    result,
+    success: result?.response?.includes("OK") ? true : false,
+    mes: result?.response?.includes("OK") ? "Successful confirmation!, Please check your email" : "Email not found",
   });
 });
 const resetPassword = asyncHandler(async (req, res) => {
@@ -126,7 +126,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     passwordResetToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  if (!user) throw new Error("Invalid reset token");
+  if (!user) throw new Error("Password reset time expires");
   user.password = password;
   user.passwordResetToken = undefined;
   user.passwordChangedAt = Date.now();
@@ -134,7 +134,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   await user.save();
   return res.status(200).json({
     success: user ? true : false,
-    mes: user ? "Updated password" : "Something went wrong",
+    mes: user ? "Updated password, Please login again" : "Something went wrong",
   });
 });
 const getAllUser = asyncHandler(async (req, res) => {
