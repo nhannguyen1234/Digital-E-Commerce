@@ -5,7 +5,6 @@ import newLabel from '../assets/new.png';
 import trendingLabel from '../assets/trending.png';
 import SelectOption from './SelectOption';
 import icons from '../ultils/icons';
-import path from '../ultils/path';
 const { FaHeart, FaEye, HiMenu } = icons;
 
 const Product = ({ productData, isNew }) => {
@@ -14,7 +13,7 @@ const Product = ({ productData, isNew }) => {
     return (
         <div className='w-full text-base px-2'>
             <Link
-                to={`/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}
+                to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}
                 onMouseEnter={(e) => {
                     e.stopPropagation();
                     setShowOption(true);

@@ -58,7 +58,7 @@ const DailyDeals = () => {
     }, [second, minute, hour, expire]);
 
     return (
-        <div className='border w-full flex-auto items-center justify-between'>
+        <div className='border w-full flex-auto items-center justify-between '>
             <div className='flex p-4 items-center justify-between'>
                 <span className='flex-1 flex justify-center'>
                     <AiFillStar size={22} color='#d11' />
@@ -90,7 +90,7 @@ const DailyDeals = () => {
                 </div>
                 <button
                     type='button'
-                    className='flex items-center justify-center gap-2 w-full bg-hovermain text-white hover:bg-gray-800 py-2 font-normal'
+                    className='flex items-center justify-center gap-2 w-full bg-hovermain text-white hover:bg-gray-800 py-2 font-normal transition duration-300 transform'
                 >
                     <HiMenu size={18} />
                     <span>OPTIONS</span>

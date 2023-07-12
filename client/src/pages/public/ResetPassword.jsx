@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
-import { Button } from '../../components';
+import { Button, InputField } from '../../components';
 import { useParams } from 'react-router-dom';
 import { apiResetPassword } from '../../apis/user';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { validate } from '../../ultils/helperFn';
 import path from '../../ultils/path';
 const ResetPassword = () => {
-    const [password, setPassword] = useState(null);
+    const [payload, setPayload] = useState({ password: '' });
+    const [invalidFields, setInvalidFields] = useState([]);
     const { token } = useParams();
     const navigate = useNavigate();
     const handleResetPassword = async () => {
-        const response = await apiResetPassword({ token, password });
-        if (response.success) {
+        const invalid = validate(payload, setInvalidFields);
+        const newPassword = payload.password;
+        if (invalid === 0) {
+            const response = await apiResetPassword({ token, newPassword });
             navigate(`/${path.LOGIN}`);
             toast.success(response.mes, {
                 position: toast.POSITION.TOP_RIGHT,
             });
         } else {
-            toast.warning(response.mes, {
+            toast.warning('Invalid password', {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
@@ -28,19 +32,18 @@ const ResetPassword = () => {
                 <label htmlFor='password' className='text-gray-900 cursor-pointer'>
                     Enter your new password:
                 </label>
-                <input
+                <InputField
+                    nameKey='password'
+                    value={payload.password}
+                    setValue={setPayload}
                     type='password'
-                    id='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder='Type here'
-                    className='w-[800px] p-2 border-b outline-none placeholder:text-sm placeholder:italic placeholder:text-gray-400 rounded-md'
+                    invalidFields={invalidFields}
+                    setInvalidFields={setInvalidFields}
                 />
-                <div className='flex gap-2 justify-end items-center w-full'>
+                <div className='flex justify-end items-center w-full'>
                     <Button name='Submit' handleOnclick={handleResetPassword} />
                 </div>
             </div>
-            <ToastContainer />
         </div>
     );
 };

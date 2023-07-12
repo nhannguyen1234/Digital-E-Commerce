@@ -1,13 +1,26 @@
-import { FaPhoneAlt, FaHeart, FaEye, FaInstagram, FaFacebookF, FaLinkedin, FaDiscord } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
+import {
+    FaPhoneAlt,
+    FaHeart,
+    FaEye,
+    FaInstagram,
+    FaFacebookF,
+    FaLinkedin,
+    FaDiscord,
+    FaShieldAlt,
+    FaTruck,
+    FaReply,
+    FaTty,
+} from 'react-icons/fa';
+import { MdEmail, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { PiBagFill } from 'react-icons/pi';
-import { RiAccountCircleFill } from 'react-icons/ri';
+import { RiAccountCircleFill, RiLogoutBoxLine } from 'react-icons/ri';
 import { PiListDashesFill } from 'react-icons/pi';
-import { AiFillStar, AiOutlineStar, AiOutlineTwitter } from 'react-icons/ai';
+import { AiFillStar, AiOutlineStar, AiOutlineTwitter, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { HiMenu } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { FaLocationDot } from 'react-icons/fa6';
-import { BsGoogle, BsPinterest } from 'react-icons/bs';
+import { BsGoogle, BsPinterest, BsFillSquareFill } from 'react-icons/bs';
+import { BiSolidGift } from 'react-icons/bi';
 const icons = {
     FaPhoneAlt,
     MdEmail,
@@ -28,5 +41,15 @@ const icons = {
     FaLocationDot,
     FaLinkedin,
     FaDiscord,
+    RiLogoutBoxLine,
+    MdOutlineKeyboardArrowRight,
+    BsFillSquareFill,
+    AiOutlineMinus,
+    AiOutlinePlus,
+    FaShieldAlt,
+    FaTruck,
+    BiSolidGift,
+    FaReply,
+    FaTty,
 };
 export default icons;

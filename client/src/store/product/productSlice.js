@@ -40,19 +40,19 @@ export const productSlice = createSlice({
         },
     },
     // (builder) => {
-    // Bắt đầu thực hiện action (Promise pending)
+    // // Bắt đầu thực hiện action (Promise pending)
     // builder.addCase(actions.pending, (state) => {
     //     // Bật trạng thái loading
     //     state.isLoading = true;
     // });
 
-    // Khi thực hiện action thành công (Promise fulfilled)
+    // // Khi thực hiện action thành công (Promise fulfilled)
     // builder.addCase(actions.fulfilled, (state, action) => {
     //     // Tắt trạng thái loading, lưu thông tin vào store
     //     state.isLoading = false;
     //     state.categories = action.payload;
     // });
-    // Khi thực hiện action thất bại (Promise rejected)
+    // // Khi thực hiện action thất bại (Promise rejected)
     // builder.addCase(actions.rejected, (state, action) => {
     //     // Tắt trạng thái loading, lưu thông báo lỗi vào store
     //     state.isLoading = false;

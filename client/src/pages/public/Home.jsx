@@ -4,7 +4,7 @@ import { Banner, Sidebar, BestSeller, DailyDeals, FeaturedProd, NewArrivals, Hot
 const Home = () => {
     return (
         <>
-            <div className='w-main flex'>
+            <div className='w-main flex mt-6'>
                 <div className='flex flex-col w-[25%] gap-5 flex-auto '>
                     <Sidebar />
                     <DailyDeals />
@@ -14,13 +14,13 @@ const Home = () => {
                     <BestSeller />
                 </div>
             </div>
-            <div className='w-full my-4'>
+            <div className='w-main my-4'>
                 <FeaturedProd />
             </div>
-            <div className='w-full my-4'>
+            <div className='w-main my-4'>
                 <NewArrivals />
             </div>
-            <div className='w-full my-4'>
+            <div className='w-main my-4'>
                 <HotCollection />
             </div>
         </>
