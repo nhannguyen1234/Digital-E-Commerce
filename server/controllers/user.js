@@ -59,7 +59,7 @@ const getCurrent = asyncHandler(async (req, res) => {
   const user = await User.findById(_id).select("-refreshToken -password -role");
   return res.status(200).json({
     success: true,
-    mes: user ? user : "User not found",
+    result: user ? user : "User not found",
   });
 });
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -78,6 +78,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     newAccessToken: response ? generateAccessToken(response._id, response.role) : "Refresh token not matched",
   });
 });
+// Không cần logout kiểu này
 const logout = asyncHandler(async (req, res) => {
   // Lấy cookie
   const cookie = req.cookies;
@@ -119,7 +120,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   });
 });
 const resetPassword = asyncHandler(async (req, res) => {
-  const { token, password } = req.body;
+  const { token, newPassword } = req.body;
   // Hash lại token cho giống database để so sánh
   const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
   const user = await User.findOne({
@@ -127,7 +128,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     passwordResetExpires: { $gt: Date.now() },
   });
   if (!user) throw new Error("Password reset time expires");
-  user.password = password;
+  user.password = newPassword;
   user.passwordResetToken = undefined;
   user.passwordChangedAt = Date.now();
   user.passwordResetExpires = undefined;
