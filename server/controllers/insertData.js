@@ -18,7 +18,7 @@ const fn = async (product) => {
     images: product?.images,
     color: product?.variants?.find((item) => item.label === "Color")?.variants[0],
     thumb: product?.thumb,
-    totalRatings: Math.ceil(Math.random() * 5),
+    totalRatings: 0,
   });
 };
 const fn2 = async (cate) => {

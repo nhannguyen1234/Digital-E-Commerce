@@ -27,7 +27,7 @@ var productSchema = new mongoose.Schema(
       required: true,
     },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     category: {
@@ -54,6 +54,7 @@ var productSchema = new mongoose.Schema(
         star: { type: Number },
         postedBy: { type: mongoose.Types.ObjectId, ref: "User" },
         comment: { type: String },
+        updatedAt: { type: Date },
       },
     ],
     totalRatings: {
