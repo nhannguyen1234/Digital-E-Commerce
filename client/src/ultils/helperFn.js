@@ -13,6 +13,7 @@ export const formatStarFromNumber = (number, size) => {
     // star = 4 => [1,1,1,1,0]
     if (!Number(number)) return;
     const star = [];
+    number = Math.round(number);
     for (let i = 0; i < +number; i++) star.push(<AiFillStar color='orange' size={size || 16} />);
     for (let i = 5; i > +number; i--) star.push(<AiOutlineStar color='orange ' size={size || 16} />);
     return star;

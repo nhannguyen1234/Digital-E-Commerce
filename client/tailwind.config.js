@@ -11,7 +11,7 @@ module.exports = {
             },
             backgroundColor: {
                 main: '#ee3131',
-                overlay: 'rgba(0,0,0,0.3)',
+                overlay: 'rgba(0,0,0,0.7)',
             },
             colors: {
                 hovermain: '#ee3131',
@@ -27,8 +27,20 @@ module.exports = {
                 8: '8 8 0%',
             },
             keyframes: {
+                'slide-in-fwd-bottom': {
+                    '0%': {
+                        '-webkit-transform': 'translateZ(-1400px) translateY(100px);',
+                        transform: 'translateZ(-1400px) translateY(100px);',
+                        opacity: '0;',
+                    },
+                    '100%': {
+                        '-webkit-transform': 'translateZ(0) translateY(0);',
+                        transform: 'translateZ(0) translateY(0);',
+                        opacity: '1;',
+                    },
+                },
                 'slide-top': {
-                    ' 0%': {
+                    '0%': {
                         '-webkit-transform': 'translateY(20px);',
                         transform: 'translateY(20px);',
                     },
@@ -65,8 +77,9 @@ module.exports = {
                 'slide-top': 'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;',
                 'slide-top-sm': 'slide-top-sm 0.2s linear both;',
                 'fade-in': 'fade-in 0.3s linear both;',
+                'slide-in-fwd-bottom': 'slide-in-fwd-bottom 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;',
             },
         },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
 };

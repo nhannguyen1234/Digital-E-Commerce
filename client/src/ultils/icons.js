@@ -10,6 +10,7 @@ import {
     FaTruck,
     FaReply,
     FaTty,
+    FaCaretDown,
 } from 'react-icons/fa';
 import { MdEmail, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { PiBagFill } from 'react-icons/pi';
@@ -51,5 +52,6 @@ const icons = {
     BiSolidGift,
     FaReply,
     FaTty,
+    FaCaretDown,
 };
 export default icons;

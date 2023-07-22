@@ -15,10 +15,14 @@ const DetailProduct = () => {
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [related, setRelated] = useState(null);
+    const [currentImg, setCurrentImg] = useState(null);
+    const [update, setUpdate] = useState(false);
     const fetchProductData = async () => {
         const response = await apiGetProduct(pid);
-        if (response.success) setProduct(response.productData);
-        console.log(response);
+        if (response.success) {
+            setProduct(response.productData);
+            setCurrentImg(response.productData?.thumb);
+        }
     };
     const fetchProductFromCategory = async () => {
         const response = await apiGetProducts({ limit: 6, category });
@@ -29,7 +33,21 @@ const DetailProduct = () => {
             fetchProductData();
             fetchProductFromCategory();
         }
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+        });
     }, [pid]);
+    useEffect(() => {
+        if (pid) {
+            fetchProductData();
+            fetchProductFromCategory();
+        }
+    }, [update]);
+    const rerender = useCallback(() => {
+        setUpdate(!update);
+    }, [update]);
     const handleQuantity = useCallback(
         (number) => {
             if (!Number(number) || Number(number) < 1) {
@@ -48,26 +66,33 @@ const DetailProduct = () => {
         },
         [setQuantity, quantity],
     );
+    const handleCurrentImg = useCallback(
+        (e, el) => {
+            e.stopPropagation();
+            setCurrentImg(el);
+        },
+        [currentImg],
+    );
     return (
         <div className='w-full flex flex-col m-auto'>
             <div className='w-full h-20 bg-[#f7f7f7] flex justify-center items-center flex-col'>
                 <div className='w-main flex flex-col justify-center text-[14px] gap-2'>
-                    <span className='text-[18px] font-semibold'>{title.toUpperCase()}</span>
+                    <span className='text-[18px] font-semibold uppercase'>{title}</span>
                     <Breadcrumbs title={title} category={category} />
                 </div>
             </div>
             <div className='w-main m-auto flex mt-4'>
                 <div className='w-2/5 flex flex-col gap-6 justify-center'>
-                    <div className='w-[458px] h-[458px] border '>
+                    <div className='w-[458px] h-[458px] border overflow-hidden'>
                         <ReactImageMagnify
                             {...{
                                 smallImage: {
                                     alt: '',
                                     isFluidWidth: true,
-                                    src: product?.thumb,
+                                    src: currentImg,
                                 },
                                 largeImage: {
-                                    src: product?.thumb,
+                                    src: currentImg,
                                     width: 1200,
                                     height: 1200,
                                 },
@@ -76,7 +101,7 @@ const DetailProduct = () => {
                     </div>
 
                     <div className='w-full'>
-                        <CustomSlider product={product} settings={settings} />
+                        <CustomSlider product={product} settings={settings} handleCurrentImg={handleCurrentImg} />
                     </div>
                 </div>
                 <div className='w-2/5 flex flex-col gap-4 pl-4'>
@@ -102,7 +127,7 @@ const DetailProduct = () => {
                     </div>
                     <div className='flex flex-col gap-2 pt-4'>
                         <div className='flex gap-2 '>
-                            <span className='font-semibold flex items-center justify-center'>Quantity</span>
+                            <span className='font-semibold select-none flex items-center justify-center'>Quantity</span>
                             <SelectQuantity
                                 quantity={quantity}
                                 handleQuantity={handleQuantity}
@@ -115,7 +140,10 @@ const DetailProduct = () => {
                 <div className='w-1/5 '>
                     <div className='flex flex-col gap-4 '>
                         {incentives?.map((el, index) => (
-                            <div key={index} className='flex items-center border py-[10px] gap-4 pl-4'>
+                            <div
+                                key={index}
+                                className='flex items-center  py-[10px] gap-4 pl-4 border-2 rounded-lg shadow-md'
+                            >
                                 <span className=' flex items-center justify-center rounded-full w-8 h-8 bg-gray-700 text-gray-200'>
                                     {el.icon}
                                 </span>
@@ -129,21 +157,26 @@ const DetailProduct = () => {
                 </div>
             </div>
             <div className='w-main m-auto mt-4'>
-                <ProductInfomation />
+                <ProductInfomation
+                    totalRatings={product?.totalRatings}
+                    ratings={product?.ratings}
+                    nameProduct={product?.title}
+                    pid={product?._id}
+                    rerender={rerender}
+                />
             </div>
             <div className='w-main m-auto mt-4'>
                 <div className='border-b-2 border-b-red-600 font-semibold pt-4 pb-2 text-[18px]'>
                     OTHER CUSTOMERS ALSO BUY:
                 </div>
-                <div className='w-full mt-6 '>
+                <div className='w-full mt-6  '>
                     <Slider {...settings}>
                         {related?.map((el) => (
-                            <NAProduct key={el._id} productData={el} />
+                            <NAProduct key={el._id} productData={el} isHome={true} />
                         ))}
                     </Slider>
                 </div>
             </div>
-            <div className='h-[500px]'></div>
         </div>
     );
 };

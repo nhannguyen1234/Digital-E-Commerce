@@ -4,7 +4,9 @@ import icons from '../ultils/icons';
 import { formatPrice, formatStarFromNumber, formatTimes } from '../ultils/helperFn';
 import Countdown from './Countdown';
 import moment from 'moment';
+import Button from './ComonCustom/Button';
 const { AiFillStar, HiMenu } = icons;
+
 let idInterval;
 const DailyDeals = () => {
     const [dailyDeals, setdailyDeal] = useState(null);
@@ -88,13 +90,12 @@ const DailyDeals = () => {
                     <Countdown unit={'Minutes'} number={minute} />
                     <Countdown unit={'Seconds'} number={second} />
                 </div>
-                <button
-                    type='button'
-                    className='flex items-center justify-center gap-2 w-full bg-hovermain text-white hover:bg-gray-800 py-2 font-normal transition duration-300 transform'
-                >
-                    <HiMenu size={18} />
-                    <span>OPTIONS</span>
-                </button>
+                <Button
+                    name='Options'
+                    iconsBefore={<HiMenu size={18} />}
+                    fw
+                    style={`flex items-center justify-center gap-2 w-full bg-hovermain text-white hover:bg-gray-800 py-2 font-normal transition duration-300 transform`}
+                />
             </div>
         </div>
     );

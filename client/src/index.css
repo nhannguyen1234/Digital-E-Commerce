@@ -11,12 +11,12 @@ button.slick-prev {
 left: 0px;
 z-index: 10;
 position: absolute;
-top:144px;
+top:170px;
 }
 button.slick-next {
 right: 60px;
 z-index: 10;
-top:144px;
+top:170px;
 }
 button.slick-prev::before{
 color: gray;

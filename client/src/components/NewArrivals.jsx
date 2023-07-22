@@ -52,10 +52,10 @@ const NewArrivals = () => {
                     ))}
                 </div>
             </div>
-            <div className='w-full mt-2 '>
+            <div className='w-full mt-2'>
                 <Slider {...settings}>
                     {products?.map((el) => (
-                        <NAProduct key={el._id} productData={el} />
+                        <NAProduct key={el._id} productData={el} isHome={true} />
                     ))}
                 </Slider>
             </div>

@@ -6,15 +6,19 @@ export const userSlice = createSlice({
         isLoggedIn: false,
         current: null,
         token: null,
+        pid: '',
     },
     reducers: {
         login: (state, action) => {
             state.isLoggedIn = action.payload.isLoggedIn;
             state.token = action.payload.token;
+            state.pid = action.payload.current._id;
         },
         logout: (state, action) => {
             state.isLoggedIn = false;
             state.token = null;
+            state.pid = null;
+            state.current = null;
         },
     },
     extraReducers: (builder) => {

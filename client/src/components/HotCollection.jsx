@@ -14,7 +14,7 @@ const HotCollection = () => {
                     ?.filter((el) => el.brand.length > 0)
                     ?.map((el) => (
                         <div key={el._id} className='w-[396px]'>
-                            <div className='border flex py-4'>
+                            <div className='border flex py-4 rounded-md shadow-md'>
                                 <div className='flex-1 flex  justify-center min-h-[204px]'>
                                     <img src={el?.image} alt='' className=' w-[144px] h-[130px] object-contain' />
                                 </div>

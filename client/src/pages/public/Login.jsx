@@ -56,13 +56,18 @@ const Login = () => {
             } else {
                 const result = await apiLogin(data);
                 if (result.success) {
-                    dispatch(login({ isLoggedIn: true, token: result.accessToken, current: result.userData }));
-                    setTimeout(() => {
-                        navigate(`/${path.HOME}`);
-                        toast.success('Login success!', {
-                            position: toast.POSITION.TOP_CENTER,
-                        });
-                    }, 100);
+                    dispatch(
+                        login({
+                            isLoggedIn: true,
+                            token: result.accessToken,
+                            current: result.userData,
+                        }),
+                    );
+                    // navigate(`/${path.HOME}`);
+                    navigate(-1);
+                    toast.success('Login success!', {
+                        position: toast.POSITION.TOP_CENTER,
+                    });
                 } else {
                     toast.error('Login failed, please check your email and password', {
                         position: toast.POSITION.TOP_CENTER,
@@ -114,7 +119,7 @@ const Login = () => {
             />
             <div className='absolute top-0 left-0 right-1/2 bottom-0 flex items-center justify-center '>
                 <div className='bg-gray-100 p-8 rounded-md min-w-[500px] shadow-2xl flex flex-col gap-10 items-center'>
-                    <span className='text-[28px] font-semibold text-hovermain mb-3 select-none'>
+                    <span className='text-[28px] font-semibold text-hovermain  select-none'>
                         {isRegister ? 'Register' : 'Login'}
                     </span>
                     {isRegister && (
@@ -162,8 +167,8 @@ const Login = () => {
                     <Button name={isRegister ? 'Register' : 'Login'} handleOnclick={handleSubmit} fw />
                     <div className='flex w-full items-center justify-between text-[16px] '>
                         {!isRegister ? (
-                            <div className='flex flex-col w-full gap-2'>
-                                <div className='flex w-full justify-between items-center'>
+                            <div className='flex flex-col w-full gap-4'>
+                                <div className='flex w-full justify-between items-center mt-[-10px]'>
                                     <span
                                         onClick={() => setIsForgotPassword(true)}
                                         className='text-gray-700 hover:text-hovermain hover:underline cursor-pointer'

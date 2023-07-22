@@ -7,7 +7,7 @@ const Button = ({ name, handleOnclick, style, iconsBefore, iconsAfter, fw }) => 
             className={
                 style
                     ? style
-                    : `px-4 py-2 rounded-sm text-white bg-hovermain font-semibold my-2 transition duration-300 transform hover:bg-gray-800 ${
+                    : `px-4 py-2 rounded-md text-white bg-hovermain select-auto font-semibold my-2 transition duration-300 transform hover:bg-gray-800 ${
                           fw ? 'w-full' : ''
                       }`
             }

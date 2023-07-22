@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
-const CustomSlider = ({ product, settings }) => {
+const CustomSlider = ({ product, settings, handleCurrentImg }) => {
     const [numberSlider, setNumberSlider] = useState(3);
     const customSettings = { ...settings, slidesToShow: numberSlider };
     useEffect(() => {
@@ -14,8 +14,13 @@ const CustomSlider = ({ product, settings }) => {
             <Slider className='detail-product-btn' {...customSettings}>
                 {product?.images?.map((el) => (
                     <div key={el} className='flex justify-center items-center'>
-                        <div className=' w-[130px] h-[122px] border '>
-                            <img src={el} alt='sub-imgs' className=' h-[120px] w-[120px] object-contain ' />
+                        <div className=' w-[130px] h-[122px] border  cursor-pointer '>
+                            <img
+                                onClick={(e) => handleCurrentImg(e, el)}
+                                src={el}
+                                alt='sub-imgs'
+                                className=' h-[120px] w-[120px] object-contain '
+                            />
                         </div>
                     </div>
                 ))}

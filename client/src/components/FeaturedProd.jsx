@@ -22,6 +22,7 @@ const FeaturedProd = () => {
                         totalRatings={el.totalRatings}
                         price={el.price}
                         id={el._id}
+                        category={el.category}
                     />
                 ))}
             </div>
