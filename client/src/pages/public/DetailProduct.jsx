@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiGetProduct, apiGetProducts } from '../../apis';
-import { Breadcrumbs, Button, SelectQuantity, ProductInfomation, CustomSlider, NAProduct } from '../../components/';
-import settings from '../../ultils/settingSlide';
+import { apiGetProduct, apiGetProducts } from 'apis';
+import { Breadcrumbs, Button, SelectQuantity, ProductInfomation, CustomSlider, NAProduct } from 'components/';
+import settings from 'ultils/settingSlide';
 import ReactImageMagnify from 'react-image-magnify';
-import { formatPrice, formatStarFromNumber } from '../../ultils/helperFn';
-import icons from '../../ultils/icons';
-import { incentives } from '../../ultils/constants';
+import { formatPrice, formatStarFromNumber } from 'ultils/helperFn';
+import icons from 'ultils/icons';
+import { incentives } from 'ultils/constants';
 import Slider from 'react-slick';
 const { BsFillSquareFill } = icons;
 

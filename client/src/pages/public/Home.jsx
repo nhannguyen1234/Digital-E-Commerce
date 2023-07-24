@@ -1,5 +1,5 @@
 import React from 'react';
-import { Banner, Sidebar, BestSeller, DailyDeals, FeaturedProd, NewArrivals, HotCollection } from '../../components';
+import { Banner, Sidebar, BestSeller, DailyDeals, FeaturedProd, NewArrivals, HotCollection } from 'components';
 
 const Home = () => {
     return (

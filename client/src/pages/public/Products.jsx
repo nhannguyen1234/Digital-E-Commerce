@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createSearchParams, useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { Breadcrumbs, SearchItem, InputSelect } from '../../components';
-import { apiGetProducts } from '../../apis';
-import NAProduct from '../../components/NAProduct';
-import { sorts } from '../../ultils/constants';
+import { Breadcrumbs, SearchItem, InputSelect, Pagination } from 'components';
+import { apiGetProducts } from 'apis';
+import NAProduct from 'components/slider/NAProduct';
+import { sorts } from 'ultils/constants';
 
 const Products = () => {
     const navigate = useNavigate();
@@ -12,37 +12,38 @@ const Products = () => {
     const [sort, setSort] = useState('');
     const [params] = useSearchParams();
     const { category } = useParams();
-    // const fetchProductByCategory = async () => {
-    //     const response = await apiGetProducts({ category});
-    //     console.log(response);
-    //     if (response.success) setProducts(response?.products);
-    // };
+
     const fetchProductsByFilter = async (queries) => {
         const response = await apiGetProducts(queries);
-        if (response.success) setProducts(response.products);
+        if (response.success) setProducts(response);
     };
-    // useEffect(() => {
-    //     fetchProductByCategory();
-    // }, [category]);
+
     useEffect(() => {
         let param = [];
         for (let i of params.entries()) param.push(i);
-        let queries = {};
-        for (let i of params) queries = { [i[0]]: i[1] };
+        const queries = {};
+        for (let i of params) queries[i[0]] = i[1];
         let priceQuery = {};
         if (queries.from && queries.to) {
             priceQuery = {
                 $and: [{ price: { gte: queries.from } }, { price: { lte: queries.to } }],
             };
             delete queries.price;
+        } else {
+            if (queries.from) queries.price = { gte: queries.from };
+            if (queries.to) queries.price = { lte: queries.to };
         }
-        if (queries.from) queries.price = { gte: queries.from };
-        if (queries.to) queries.price = { lte: queries.to };
         delete queries.to;
         delete queries.from;
         const q = { ...priceQuery, ...queries };
         fetchProductsByFilter(q);
+        window.scroll({
+            top: 300,
+            left: 0,
+            behavior: 'smooth',
+        });
     }, [params]);
+
     const handleChangeFilter = useCallback(
         (name) => {
             if (isActiveClick === name) setIsActiveClick(null);
@@ -50,18 +51,23 @@ const Products = () => {
         },
         [isActiveClick],
     );
+
     const changeValue = useCallback(
         (value) => {
             setSort(value);
         },
         [sort],
     );
+
     useEffect(() => {
-        navigate({
-            pathname: `/${category}`,
-            search: createSearchParams({ sort }).toString(),
-        });
-    }, [sort]);
+        if (sort) {
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({ sort }).toString(),
+            });
+        }
+    }, [sort, navigate, category]);
+
     return (
         <div className='w-full flex flex-col items-center justify-between mt-1'>
             <div className='w-full h-20 bg-[#f7f7f7] flex justify-center items-center'>
@@ -96,9 +102,12 @@ const Products = () => {
                 </div>
             </div>
             <div className='grid grid-cols-4 gap-2 mt-4 mb-8'>
-                {products?.map((el) => (
+                {products?.products?.map((el) => (
                     <NAProduct key={el._id} productData={el} isHome={false} />
                 ))}
+            </div>
+            <div>
+                <Pagination totalCount={products?.counts} />
             </div>
         </div>
     );

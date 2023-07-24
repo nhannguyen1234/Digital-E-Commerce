@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button, InputField } from '../../components';
+import { Button, InputField } from 'components';
 import { useParams } from 'react-router-dom';
-import { apiResetPassword } from '../../apis/user';
+import { apiResetPassword } from 'apis/user';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { validate } from '../../ultils/helperFn';
-import path from '../../ultils/path';
+import { validate } from 'ultils/helperFn';
+import path from 'ultils/path';
 const ResetPassword = () => {
     const [payload, setPayload] = useState({ password: '' });
     const [invalidFields, setInvalidFields] = useState([]);

@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { InputField, Button } from '../../components';
-import { apiRegister, apiLogin, apiForgotPassword } from '../../apis/user';
-import { login } from '../../store/user/userSlice';
-import { validate } from '../../ultils/helperFn';
+import { InputField, Button } from 'components';
+import { apiRegister, apiLogin, apiForgotPassword } from 'apis/user';
+import { login } from 'store/user/userSlice';
+import { validate } from 'ultils/helperFn';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import path from '../../ultils/path';
+import path from 'ultils/path';
 
 const Login = () => {
     const navigate = useNavigate();
