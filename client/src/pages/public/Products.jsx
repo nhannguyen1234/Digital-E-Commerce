@@ -19,10 +19,7 @@ const Products = () => {
     };
 
     useEffect(() => {
-        let param = [];
-        for (let i of params.entries()) param.push(i);
-        const queries = {};
-        for (let i of params) queries[i[0]] = i[1];
+        const queries = Object.fromEntries([...params]);
         let priceQuery = {};
         if (queries.from && queries.to) {
             priceQuery = {
@@ -80,18 +77,8 @@ const Products = () => {
                 <div className='flex flex-col gap-3'>
                     <span className='font-semibold text-sm text-[#505050]'>Filter by</span>
                     <div className='w-[78%] flex-auto flex items-center gap-4'>
-                        <SearchItem
-                            name='price'
-                            isActiveClick={isActiveClick}
-                            handleChangeFilter={handleChangeFilter}
-                            type='input'
-                        />
-                        <SearchItem
-                            name='color'
-                            isActiveClick={isActiveClick}
-                            handleChangeFilter={handleChangeFilter}
-                            type='checkbox'
-                        />
+                        <SearchItem name='price' isActiveClick={isActiveClick} handleChangeFilter={handleChangeFilter} type='input' />
+                        <SearchItem name='color' isActiveClick={isActiveClick} handleChangeFilter={handleChangeFilter} type='checkbox' />
                     </div>
                 </div>
                 <div className='w-[22%] flex flex-col gap-3'>
@@ -107,7 +94,7 @@ const Products = () => {
                 ))}
             </div>
             <div>
-                <Pagination totalCount={products?.counts} />
+                <Pagination totalCount={products?.counts} pageSize={process.env.REACT_APP_PRODUCT_LIMIT} />
             </div>
         </div>
     );

@@ -9,7 +9,7 @@ const Comment = ({ image = avatar, updatedAt, comment, star, postedBy }) => {
                 <div className='flex gap-4 items-center justify-center'>
                     <img src={image} alt='avatar' className='w-6 h-6 object-cover' />
                     <span className='text-[#4a4a4a] font-semibold'>
-                        {`${postedBy?.firstname} ${postedBy?.lastname}` || 'User'}
+                        {`${postedBy?.firstname.concat(' ', postedBy.lastname) || 'User'}`}
                     </span>
                 </div>
                 <span className='text-[#707070] italic font-medium'>{moment(updatedAt)?.format('L LT')}</span>

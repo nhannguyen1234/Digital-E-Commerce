@@ -3,7 +3,10 @@ import logo from 'assets/logo1.png';
 import icons from 'ultils/icons';
 import path from 'ultils/path';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 const Header = () => {
+    const { current } = useSelector((state) => state.user);
     const { FaPhoneAlt, MdEmail, PiBagFill, RiAccountCircleFill } = icons;
     return (
         <div className='w-main h-[110px] flex justify-between py-9'>
@@ -25,14 +28,25 @@ const Header = () => {
                     </span>
                     <span className='text-[12px]'>Online Support 24/7</span>
                 </div>
-                <div className='flex items-center gap-2 border-r pr-4'>
-                    <PiBagFill color='red' size={24} />
-                    <span className='text-[14px] cursor-pointer hover:text-hovermain'> 0 item</span>
-                </div>
-                <div className='flex items-center pr-4 gap-2'>
-                    <RiAccountCircleFill size={24} color='red' />
-                    <span className='text-[14px] cursor-pointer hover:text-hovermain'>Profile</span>
-                </div>
+                {current && (
+                    <>
+                        <div className='flex items-center gap-2 border-r pr-4'>
+                            <PiBagFill color='red' size={24} />
+                            <span className='text-[14px] cursor-pointer hover:text-hovermain'> 0 item</span>
+                        </div>
+                        <Link
+                            to={
+                                +current?.role === 2001
+                                    ? `/${path.USER}/${path.PERSONAL}`
+                                    : `/${path.ADMIN}/${path.DASHBOARD}`
+                            }
+                            className='flex items-center pr-4 gap-2'
+                        >
+                            <RiAccountCircleFill size={24} color='red' />
+                            <span className='text-[14px] cursor-pointer hover:text-hovermain'>Profile</span>
+                        </Link>
+                    </>
+                )}
             </div>
         </div>
     );

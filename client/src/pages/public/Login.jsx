@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { InputField, Button } from 'components';
+import { InputField, Button, Loading } from 'components';
 import { apiRegister, apiLogin, apiForgotPassword } from 'apis/user';
 import { login } from 'store/user/userSlice';
 import { validate } from 'ultils/helperFn';
@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import path from 'ultils/path';
+import { showModal } from 'store/app/appSlice';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,12 +19,15 @@ const Login = () => {
         password: '',
         mobile: '',
     });
+
     const [isRegister, setIsRegister] = useState(false);
     const [isForgotPassword, setIsForgotPassword] = useState(false);
     const [email, setEmail] = useState(null);
     const [invalidFields, setInvalidFields] = useState([]);
     const handleForgotPassword = async () => {
+        dispatch(showModal({ isShowModal: true, childrenModal: <Loading /> }));
         const response = await apiForgotPassword({ email });
+        dispatch(showModal({ isShowModal: false, childrenModal: null }));
         if (response.success) {
             toast.success(response.mes, {
                 position: toast.POSITION.TOP_RIGHT,
@@ -63,8 +67,8 @@ const Login = () => {
                             current: result.userData,
                         }),
                     );
-                    // navigate(`/${path.HOME}`);
-                    navigate(-1);
+                    navigate(`/${path.HOME}`);
+                    // navigate(-1);
                     toast.success('Login success!', {
                         position: toast.POSITION.TOP_CENTER,
                     });

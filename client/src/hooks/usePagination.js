@@ -1,11 +1,6 @@
 import { useMemo } from 'react';
 import { range } from 'ultils/helperFn';
-const usePagination = (
-    totalProductCount,
-    currentPage,
-    pageSize = process.env.REACT_APP_PRODUCT_LIMIT,
-    siblingCount = 1,
-) => {
+const usePagination = (totalProductCount, currentPage, pageSize, siblingCount = 1) => {
     const paginationArray = useMemo(() => {
         const paginationCount = Math.ceil(totalProductCount / pageSize);
         const totalPaginationItem = siblingCount + 5;

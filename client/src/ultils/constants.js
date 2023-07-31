@@ -1,6 +1,7 @@
 import { FaReply, FaShieldAlt, FaTruck, FaTty } from 'react-icons/fa';
 import path from './path';
-import { BiSolidGift } from 'react-icons/bi';
+import icons from 'ultils/icons';
+const { BiSolidGift, BiSolidDashboard, HiUserGroup, RiProductHuntFill, RiBillFill } = icons;
 export const navigation = [
     {
         id: 1,
@@ -104,5 +105,65 @@ export const voteOptions = [
     {
         id: 5,
         text: 'Perfect',
+    },
+];
+
+export const adminSidebar = [
+    {
+        id: 1,
+        type: 'single',
+        text: 'Dashboard',
+        path: `/${path.ADMIN}/${path.DASHBOARD}`,
+        icon: <BiSolidDashboard color='orange' size={17} />,
+    },
+    {
+        id: 2,
+        type: 'single',
+        text: 'Manage Users',
+        path: `/${path.ADMIN}/${path.MANAGE_USER}`,
+        icon: <HiUserGroup color='orange' size={17} />,
+    },
+    {
+        id: 3,
+        type: 'parent',
+        text: 'Manage Products',
+        icon: <RiProductHuntFill color='orange' size={17} />,
+        submenu: [
+            {
+                text: 'Create Product',
+                path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+            },
+            {
+                text: 'Manage Product',
+                path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+            },
+        ],
+    },
+    {
+        id: 4,
+        type: 'single',
+        text: 'Manage Order',
+        path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
+        icon: <RiBillFill color='orange' size={17} />,
+    },
+];
+export const roles = [
+    {
+        code: 1006,
+        value: 'Admin',
+    },
+    {
+        code: 2001,
+        value: 'User',
+    },
+];
+export const isBlocked = [
+    {
+        code: true,
+        value: 'Blocked',
+    },
+    {
+        code: false,
+        value: 'Active',
     },
 ];

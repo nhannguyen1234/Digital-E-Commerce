@@ -6,13 +6,13 @@ export const userSlice = createSlice({
         isLoggedIn: false,
         current: null,
         token: null,
-        pid: '',
+        uid: '',
     },
     reducers: {
         login: (state, action) => {
             state.isLoggedIn = action.payload.isLoggedIn;
             state.token = action.payload.token;
-            state.pid = action.payload.current._id;
+            state.uid = action.payload.current._id;
         },
         logout: (state, action) => {
             state.isLoggedIn = false;
@@ -28,8 +28,8 @@ export const userSlice = createSlice({
 
         builder.addCase(actions.getCurrent.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.current = action.payload;
             state.isLoggedIn = true;
+            state.current = action.payload;
         });
 
         builder.addCase(actions.getCurrent.rejected, (state, action) => {

@@ -1,7 +1,16 @@
 import React from 'react';
-
+import { Outlet, Navigate } from 'react-router-dom';
+import path from 'ultils/path';
+import { useSelector } from 'react-redux';
 const User = () => {
-    return <div>User</div>;
+    const { isLoggedIn, current } = useSelector((state) => state.user);
+    if (!isLoggedIn || !current) return <Navigate to={`/${path.LOGIN}`} replace={true} />;
+    return (
+        <div>
+            <div>User</div>
+            <Outlet />
+        </div>
+    );
 };
 
 export default User;

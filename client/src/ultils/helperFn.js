@@ -47,38 +47,26 @@ export const validate = (payload, setInvalidFields) => {
                 switch (true) {
                     case arr[1].length < 6:
                         invalids++;
-                        setInvalidFields((prev) => [
-                            ...prev,
-                            { name: arr[0], mes: 'The password must be at least 6 characters long.' },
-                        ]);
+                        setInvalidFields((prev) => [...prev, { name: arr[0], mes: 'The password must be at least 6 characters long.' }]);
                         break;
                     case !arr[1].match(/(?=.*[A-Z])/):
                         invalids++;
-                        setInvalidFields((prev) => [
-                            ...prev,
-                            { name: arr[0], mes: 'The password must contain at least 1 uppercase letter.' },
-                        ]);
+                        setInvalidFields((prev) => [...prev, { name: arr[0], mes: 'The password must contain at least 1 uppercase letter.' }]);
                         break;
                     case !arr[1].match(/(?=.*\d)/):
                         invalids++;
-                        setInvalidFields((prev) => [
-                            ...prev,
-                            { name: arr[0], mes: 'The password must contain at least 1 number.' },
-                        ]);
+                        setInvalidFields((prev) => [...prev, { name: arr[0], mes: 'The password must contain at least 1 number.' }]);
                         break;
                     case !arr[1].match(/(?=.*[@$!%*?&.])/):
                         invalids++;
-                        setInvalidFields((prev) => [
-                            ...prev,
-                            { name: arr[0], mes: 'The password must contain at least 1 special character.' },
-                        ]);
+                        setInvalidFields((prev) => [...prev, { name: arr[0], mes: 'The password must contain at least 1 special character.' }]);
                         break;
                     default:
                         break;
                 }
                 break;
             case 'mobile':
-                const regexMobile = /^\d+$/;
+                const regexMobile = /^\d{10}$/;
                 if (!arr[1].match(regexMobile)) {
                     invalids++;
                     setInvalidFields((prev) => [...prev, { name: arr[0], mes: 'Phone number invalid' }]);

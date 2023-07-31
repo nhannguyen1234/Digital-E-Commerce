@@ -56,7 +56,7 @@ const login = asyncHandler(async (req, res) => {
 });
 const getCurrent = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const user = await User.findById(_id).select("-refreshToken -password -role");
+  const user = await User.findById(_id).select("-refreshToken -password");
   return res.status(200).json({
     success: true,
     result: user ? user : "User not found",
@@ -139,19 +139,58 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 });
 const getAllUser = asyncHandler(async (req, res) => {
-  const response = await User.find().select("-password -refreshToken");
-  return res.status(200).json({
-    success: response ? true : false,
-    user: response,
+  const queries = { ...req.query };
+  const excludeFields = ["limit", "sort", "page", "fields"];
+  excludeFields.forEach((item) => delete queries[item]);
+
+  let queryString = JSON.stringify(queries);
+  queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, (item) => `$${item}`);
+  const formatQueries = JSON.parse(queryString);
+
+  if (req.query.search) {
+    delete formatQueries.search;
+    formatQueries["$or"] = [
+      { firstname: { $regex: req.query.search, $options: "i" } },
+      { lastname: { $regex: req.query.search, $options: "i" } },
+      { email: { $regex: req.query.search, $options: "i" } },
+      { mobile: { $regex: req.query.search, $options: "i" } },
+    ];
+  }
+  let queryCommand = User.find(formatQueries);
+
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    queryCommand = queryCommand.sort(sortBy);
+  }
+
+  if (req.query.fields) {
+    const fields = req.query.fields.split(",").join(" ");
+    queryCommand = queryCommand.select(fields);
+  }
+
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+  const skip = (page - 1) * limit;
+  queryCommand.skip(skip).limit(limit);
+
+  queryCommand.exec(async (error, response) => {
+    if (error) throw new Error(error.message);
+    const counts = await User.find(formatQueries).countDocuments();
+    return res.status(200).json({
+      success: response ? true : false,
+      counts,
+      users: response ? response : "Cannot get users",
+    });
   });
 });
+
 const deleteUser = asyncHandler(async (req, res) => {
-  const { _id } = req.query;
-  if (!_id) throw new Error("Missing input");
-  const response = await User.findByIdAndDelete(_id);
+  const { uid } = req.params;
+  if (!uid) throw new Error("Missing input");
+  const response = await User.findByIdAndDelete(uid);
   return res.status(200).json({
     success: response ? true : false,
-    deletedUser: response ? `Account created by ${response.email} has been deleted` : "No user delete",
+    mes: response ? `Account created by ${response.email} has been deleted` : "Delete failed",
   });
 });
 const updateUser = asyncHandler(async (req, res) => {
@@ -176,7 +215,7 @@ const updateUserByAdmin = asyncHandler(async (req, res) => {
   }).select("-password -role -refreshToken");
   return res.status(200).json({
     success: response ? true : false,
-    updateUser: response ? response : "Some thing went wrong",
+    mes: response ? "Updated" : "Update failed",
   });
 });
 const updateUserAddress = asyncHandler(async (req, res) => {

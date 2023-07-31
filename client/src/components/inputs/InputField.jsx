@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
+import clsx from 'clsx';
 
-const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidFields }) => {
+const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidFields, style, fw, placeholder }) => {
     return (
-        <div className='w-full relative flex flex-col '>
+        <div className={clsx('w-full relative flex flex-col', fw && 'w-full')}>
             {value !== '' && (
                 <label
                     className='absolute top-[-20px] text-[15px] font-normal pl-2 animate-slide-top-sm'
@@ -12,14 +13,16 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
                 </label>
             )}
             <input
-                // ref={inputRef}
                 type={type || 'text'}
-                className='px-4 py-3 rounded-md w-full  border placeholder:text-sm placeholder:italic outline-none'
-                placeholder={nameKey.charAt(0).toUpperCase() + nameKey.slice(1)}
+                className={clsx(
+                    'px-4 py-3 rounded-md border placeholder:text-sm placeholder:italic outline-none',
+                    style ? style : 'w-full',
+                )}
+                placeholder={placeholder || nameKey.charAt(0).toUpperCase() + nameKey.slice(1)}
                 value={value}
                 id={nameKey}
                 onChange={(e) => setValue((prev) => ({ ...prev, [nameKey]: e.target.value }))}
-                onFocus={() => setInvalidFields([])}
+                onFocus={() => setInvalidFields && setInvalidFields([])}
             />
             {invalidFields?.some((el) => el.name === nameKey) && (
                 <small className='text-[14px] absolute top-[52px] left-2 animate-fade-in text-red-600 italic'>

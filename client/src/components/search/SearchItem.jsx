@@ -16,6 +16,7 @@ const SearchItem = ({ name, isActiveClick, handleChangeFilter, type = 'checkbox'
     });
     const navigate = useNavigate();
     const [params] = useSearchParams();
+
     const { category } = useParams();
     const handleSelect = (e) => {
         const alreadyEl = selected.find((el) => el === e.target.id);
@@ -43,7 +44,7 @@ const SearchItem = ({ name, isActiveClick, handleChangeFilter, type = 'checkbox'
             pathname: `/${category}`,
             search: createSearchParams(queries).toString(),
         });
-    }, [selected, category, navigate, params]);
+    }, [selected]);
     const debouncePriceFrom = useDebounce(price.from, 500);
     const debouncePriceTo = useDebounce(price.to, 500);
     useEffect(() => {
@@ -59,18 +60,17 @@ const SearchItem = ({ name, isActiveClick, handleChangeFilter, type = 'checkbox'
             queries.to = price.to;
             queries.page = 1;
         } else delete queries.to;
-
         navigate({
             pathname: `/${category}`,
             search: createSearchParams(queries).toString(),
         });
-    }, [debouncePriceFrom, debouncePriceTo, category, navigate, params, price.to, price.from]);
+    }, [debouncePriceFrom, debouncePriceTo]);
     return (
         <div
             onClick={() => handleChangeFilter(name)}
             className='relative border rounded-md cursor-pointer border-gray-500 hover:border-gray-900 flex justify-between items-center p-3 gap-6'
         >
-            <span className='text-xs text-gray-400 capitalize'>{name}</span>
+            <span className='text-xs text-gray-500 capitalize'>{name}</span>
             <FaCaretDown size={12} />
             {isActiveClick === name && (
                 <div className='absolute top-[calc(100%+1px)] left-0 w-fit bg-white min-w-[300px] z-50 border'>
