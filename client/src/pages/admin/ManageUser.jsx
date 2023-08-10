@@ -31,6 +31,8 @@ const ManageUser = () => {
         search: '',
     });
     const [edit, setEdit] = useState(null);
+    // const [defaultValue, setDefaultValue] = useState(edit);
+    // console.log(defaultValue);
     const [update, setUpdate] = useState(false);
     const [params] = useSearchParams();
     const rerender = useCallback(() => {
@@ -41,6 +43,9 @@ const ManageUser = () => {
         const response = await apiGetAllUser({ ...params, limit: process.env.REACT_APP_USER_LIMIT });
         if (response.success) setUsers(response);
     };
+    // useEffect(() => {
+    //     setDefaultValue(edit);
+    // }, [edit]);
     useEffect(() => {
         const queries = Object.fromEntries([...params]);
         if (queriesDebounce) queries.search = queriesDebounce;
@@ -78,7 +83,7 @@ const ManageUser = () => {
                 <form onSubmit={handleSubmit(handleUpdate)}>
                     <div className='flex py-4 w-full '>
                         <InputField nameKey='search' value={queries.search} setValue={setQueries} style={'w-[500px]'} placeholder={'Search users'} />
-                        {edit && <Button name='Update' type='submit' fw={true} />}
+                        {edit && <Button name='Update' type='submit' />}
                     </div>
                     <table className='table-auto mb-6 text-left w-full'>
                         <thead className='font-medium bg-[#2b3a4a] text-sm border border-[#2b3a4a] text-white'>
@@ -112,7 +117,7 @@ const ManageUser = () => {
                                                         message: 'Please enter a valid email',
                                                     },
                                                 }}
-                                                defaultValue={edit.email}
+                                                defaultValue={edit?.email}
                                             />
                                         ) : (
                                             <span>{el.email}</span>
@@ -128,7 +133,7 @@ const ManageUser = () => {
                                                 validate={{
                                                     required: 'First name is required',
                                                 }}
-                                                defaultValue={edit.firstname}
+                                                defaultValue={edit?.firstname}
                                             />
                                         ) : (
                                             <span>{el.firstname}</span>
@@ -142,7 +147,7 @@ const ManageUser = () => {
                                                 errors={errors}
                                                 nameKey={'lastname'}
                                                 validate={{ required: 'Last name is required' }}
-                                                defaultValue={edit.lastname}
+                                                defaultValue={edit?.lastname}
                                             />
                                         ) : (
                                             <span>{el.lastname}</span>
@@ -177,7 +182,7 @@ const ManageUser = () => {
                                                         message: 'Please enter a valid phone number',
                                                     },
                                                 }}
-                                                defaultValue={edit.mobile}
+                                                defaultValue={edit?.mobile}
                                             />
                                         ) : (
                                             <span>{el.mobile}</span>
@@ -215,7 +220,13 @@ const ManageUser = () => {
                                         {edit?._id === el._id ? (
                                             <MdCancel size={18} className='cursor-pointer transition duration-300 transform hover:text-orange-700' onClick={() => setEdit(null)} />
                                         ) : (
-                                            <AiFillEdit size={18} className='cursor-pointer transition duration-300 transform hover:text-orange-700' onClick={() => setEdit(el)} />
+                                            <AiFillEdit
+                                                size={18}
+                                                className='cursor-pointer transition duration-300 transform hover:text-orange-700'
+                                                onClick={() => {
+                                                    setEdit(el);
+                                                }}
+                                            />
                                         )}
 
                                         <RiDeleteBin6Line

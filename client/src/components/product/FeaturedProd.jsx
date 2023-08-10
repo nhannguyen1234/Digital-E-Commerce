@@ -15,15 +15,7 @@ const FeaturedProd = () => {
             <div className='border-b-2 border-b-red-600 font-semibold pt-4 pb-3 text-[20px]'>FEATURED PRODUCTS</div>
             <div className='flex flex-wrap mx-[-10px] mt-5'>
                 {featureProduct?.map((el) => (
-                    <ProductCard
-                        key={el._id}
-                        thumb={el.thumb}
-                        title={el.title}
-                        totalRatings={el.totalRatings}
-                        price={el.price}
-                        id={el._id}
-                        category={el.category}
-                    />
+                    <ProductCard key={el._id} thumb={el.thumb} title={el.title} totalRatings={el.totalRatings} price={el.price} id={el._id} category={el.category} />
                 ))}
             </div>
             <div className='flex justify-between gap-5'>
@@ -33,14 +25,8 @@ const FeaturedProd = () => {
                     className='flex-2'
                 />
                 <div className='flex flex-col justify-between flex-1'>
-                    <img
-                        src='https://cdn.shopify.com/s/files/1/1903/4853/files/banner2-bottom-home2_400x.jpg?v=1613166661'
-                        alt=''
-                    />
-                    <img
-                        src='https://cdn.shopify.com/s/files/1/1903/4853/files/banner3-bottom-home2_400x.jpg?v=1613166661'
-                        alt=''
-                    />
+                    <img src='https://cdn.shopify.com/s/files/1/1903/4853/files/banner2-bottom-home2_400x.jpg?v=1613166661' alt='' />
+                    <img src='https://cdn.shopify.com/s/files/1/1903/4853/files/banner3-bottom-home2_400x.jpg?v=1613166661' alt='' />
                 </div>
                 <img
                     src='https://cdn.shopify.com/s/files/1/1903/4853/files/banner4-bottom-home2_92e12df0-500c-4897-882a-7d061bb417fd_400x.jpg?v=1613166661'

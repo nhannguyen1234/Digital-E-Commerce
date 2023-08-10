@@ -22,6 +22,7 @@ export { default as SelectQuantity } from './common/SelectQuantity';
 export { default as Loading } from './common/Loading';
 export { default as InputSelect } from './inputs/InputSelect';
 export { default as InputForm } from './inputs/InputForm';
+export { default as MarkDownEditor } from './inputs/MarkDownEditor';
 export { default as InputSelectForm } from './inputs/InputSelectForm';
 export { default as ProductInfomation } from './ratings/ProductInfomation';
 export { default as CustomSlider } from './common/CustomSlider';
